@@ -1,0 +1,8 @@
+.appear {
+  opacity: 1;
+  transition: opacity 0.3s;
+
+  @starting-style {
+    opacity: 0;
+  }
+}

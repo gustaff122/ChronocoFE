@@ -1,0 +1,73 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@chronoco/*": [
+        "src/app/*"
+      ],
+      "@chronoco/core/*": [
+        "src/app/core/*"
+      ],
+      "@chronoco/const/*": [
+        "src/app/const/*"
+      ],
+      "@chronoco/directives/*": [
+        "src/app/directives/*"
+      ],
+      "@chronoco/guards/*": [
+        "src/app/guards/*"
+      ],
+      "@chronoco/shell/*": [
+        "src/app/shell/*"
+      ],
+      "@chronoco/interceptors/*": [
+        "src/app/interceptors/*"
+      ],
+      "@chronoco/locales/*": [
+        "src/app/locales/*"
+      ],
+      "@chronoco/models/*": [
+        "src/app/models/*"
+      ],
+      "@chronoco/pipes/*": [
+        "src/app/pipes/*"
+      ],
+      "@chronoco/providers/*": [
+        "src/app/providers/*"
+      ],
+      "@chronoco/resolvers/*": [
+        "src/app/resolvers/*"
+      ],
+      "@chronoco/services/*": [
+        "src/app/services/*"
+      ],
+      "@chronoco/stores/*": [
+        "src/app/stores/*"
+      ],
+      "@chronoco/ui/*": [
+        "src/app/ui/*"
+      ],
+      "@chronoco/ui/atoms/*": [
+        "src/app/ui/atoms/*"
+      ],
+      "@chronoco/ui/molecules/*": [
+        "src/app/ui/molecules/*"
+      ],
+      "@chronoco/ui/organisms/*": [
+        "src/app/ui/organisms/*"
+      ],
+      "@chronoco/utils/*": [
+        "src/app/utils/*"
+      ],
+      "@chronoco/modals/*": [
+        "src/app/modals/*"
+      ],
+      "@chronoco/assets/*": [
+        "src/app/assets/*"
+      ],
+      "@chronoco/env/*": [
+        "environments/*"
+      ]
+    }
+  }
+}

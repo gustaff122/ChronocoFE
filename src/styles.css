@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import '@angular/cdk/overlay-prebuilt.css';
+@import "tailwindcss";
+
+@theme {
+  --z-index-2xl: 2147483647;
+  --z-index-xl: 2147483646;
+  --h-page: calc(100vh - 24px - 84px - 8px);
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+}
+
+.cdk-overlay-container {
+  @apply z-2xl;
+}

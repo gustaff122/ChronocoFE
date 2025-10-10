@@ -1,0 +1,6 @@
+<button (click)="pinHandler()" type="button"
+        [class.border-orange-400]="isSelected()"
+        [class.border-blue-600]="!isSelected()"
+        class="h-7 w-7 transition-colors bg-gray-100 border border-solid rounded-full flex items-center justify-center">
+  <ng-icon [class]="isSelected() ? 'text-orange-400' : 'text-blue-700'" [name]="isSelected() ? 'heroBookmarkSolid' : 'heroBookmark'"/>
+</button>
