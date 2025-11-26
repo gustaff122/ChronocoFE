@@ -1,6 +1,6 @@
 @let caption = isEditing() ? `Zaktualizuj wydarzenie` : 'Dodaj nowe wydarzenie';
 
-<app-page-container [caption]="caption + ' ' + editedEvent()?.name"
+<app-page-container [caption]="caption + ' ' + (editedEvent()?.name ?? '')"
                     [previousPage]="['/', RoutesEnum.EVENTS]"
 >
   <ng-container actions [ngTemplateOutlet]="actionTpl"/>

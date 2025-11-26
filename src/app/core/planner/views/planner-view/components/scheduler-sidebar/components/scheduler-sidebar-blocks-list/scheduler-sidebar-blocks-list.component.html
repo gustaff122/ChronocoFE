@@ -6,7 +6,7 @@
     {{ blocksType() | appSchedulerTranslateBlockType }}
   </h3>
 
-  <button type="button" (click)="roll()" class="flex justify-center items-center absolute right-0 top-1/2 -translate-x-1/2">
+  <button type="button" (click)="roll()" class="flex cursor-pointer justify-center items-center absolute right-0 top-1/2 -translate-x-1/2">
     <ng-icon [name]="isRolledUp() ? 'heroChevronDown' : 'heroChevronUp'"/>
   </button>
 </div>

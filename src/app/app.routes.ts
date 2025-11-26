@@ -24,6 +24,10 @@ export const routes: Route[] = [
             path: RoutesEnum.PLANNER,
             loadChildren: () => import('@chronoco/core/planner/planner.routes'),
           },
+          {
+            path: RoutesEnum.USERS,
+            loadChildren: () => import('@chronoco/core/users/users.routes'),
+          },
         ],
       },
       {

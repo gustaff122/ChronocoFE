@@ -1,0 +1,110 @@
+<div
+  class="relative overflow-x-auto shadow sm:rounded-lg"
+  [ngClass]="{ 'sm:rounded-b-none': config().hasSquareBottom }">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-900">
+    <colgroup>
+      <col span="1" class="w-12"/>
+      @for (column of displayedColumns(); track column.caption) {
+        <col span="1" [style.width]="column?.width + 'px'"/>
+      }
+    </colgroup>
+
+    <thead
+      class="text-xs uppercase bg-gray-100">
+    <tr>
+      @if (config().checkboxesConfig?.hasCheckboxes) {
+        <th scope="col" class="p-4 w-12">
+          <div class="flex items-center">
+            <input
+              [ngModel]="headerCheckbox()"
+              (ngModelChange)="onHeaderCheckboxChange($event)"
+              id="checkbox-all"
+              type="checkbox"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"/>
+            <label for="checkbox-all" class="sr-only">checkbox</label>
+          </div>
+        </th>
+      }
+      @for (column of displayedColumns(); track column) {
+        <th
+          [style.width]="column?.width + 'px'"
+          scope="col"
+          class="px-4 py-3 font-semibold text-gray-500 column-caption">
+          {{ column.caption }}
+        </th>
+      }
+    </tr>
+    </thead>
+
+    <ng-container
+      [ngTemplateOutlet]="
+        isInitialLoading() ? null : datasource().items.length > 0 ? contentTpl : emptyTpl
+      "></ng-container>
+  </table>
+
+  @if (isInitialLoading()) {
+    <div class="h-96 w-full flex justify-center items-center">
+      LOADING
+    </div>
+  }
+</div>
+
+<ng-template #contentTpl>
+  <tbody class="relative">
+    @for (row of displayedRows(); track row) {
+      <tr
+        class="bg-white border-b border-gray-200">
+        @if (config().checkboxesConfig?.hasCheckboxes) {
+          <td class="w-12 p-4">
+            <div class="flex items-center">
+              <input
+                (ngModelChange)="onCheckboxChange($event, row[config()?.checkboxesConfig?.checkboxKey])"
+                [ngModel]="checkboxesArray()[row[config()?.checkboxesConfig?.checkboxKey]]"
+                id="checkbox-table-1"
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2"/>
+              <label for="checkbox-table-1" class="sr-only">checkbox</label>
+            </div>
+          </td>
+        }
+        @for (column of displayedColumns(); track column) {
+          <td
+            class="px-4"
+            [style.width]="column?.width + 'px'"
+            [style.height]="column?.height ? column?.height + 'px' : '50px'">
+            @if (column?.templateName) {
+              <ng-container
+                [ngTemplateOutlet]="column.templateName | tableGetCellTemplate : templates() : templatesNames()"
+                [ngTemplateOutletContext]="{ dataItem: row }"/>
+            } @else {
+              {{ row[column.dataField] }}
+            }
+          </td>
+        }
+      </tr>
+    }
+    @if (isLoadingAnotherPage()) {
+      <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+        <div class="z-20">
+          LOADING
+        </div>
+
+        <div class="absolute top-0 left-0 w-full h-full bg-neutral-700 opacity-50 animate-pulse"></div>
+      </div>
+    }
+  </tbody>
+</ng-template>
+
+<ng-template #emptyTpl>
+  <tbody>
+  <tr>
+    <td [attr.colspan]="emptyColspan()">
+      <div class="flex justify-center items-center h-96 flex-col gap-y-3">
+        <i class="icon-drawer text-[82px]"></i>
+        <p class="text-lg">Przeszukaliśmy naszą bazę i nie znaleźliśmy żadnych wyników.</p>
+        <p class="font-semibold">Spróbuj zmienić filtry wyszukiwania.</p>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</ng-template>
