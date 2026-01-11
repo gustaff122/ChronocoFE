@@ -10,6 +10,9 @@ import { ITableDatasource } from '@chronoco/ui/shared-table/models/i-table-datas
 import { InitialsPipe } from '@chronoco/pipes/initials.pipe';
 import { UserRoleEnum } from '@chronoco/services/users-service/models/user-role.enum';
 import { PaginationComponent } from '@chronoco/ui/pagination/pagination.component';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { heroLockClosed } from '@ng-icons/heroicons/outline';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-users-list-view',
@@ -21,13 +24,16 @@ import { PaginationComponent } from '@chronoco/ui/pagination/pagination.componen
     InitialsPipe,
     DatePipe,
     PaginationComponent,
+    NgIcon,
+    TippyDirective,
+
   ],
   templateUrl: './users-list-view.component.html',
   styleUrl: './users-list-view.component.css',
   providers: [
     UsersListViewComponentStore,
+    provideIcons({ heroLockClosed })
   ],
-
 })
 export class UsersListViewComponent {
   private readonly componentStore: UsersListViewComponentStore = inject(UsersListViewComponentStore);

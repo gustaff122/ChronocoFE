@@ -6,6 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { credentialsInterceptor } from './interceptors/credentials.interceptor';
 import { AuthStore } from './stores/auth-store/auth.store';
+import { popperVariation, provideTippyConfig, provideTippyLoader, tooltipVariation } from '@ngneat/helipopper/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +15,14 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([ credentialsInterceptor ])),
     provideClientHydration(withEventReplay()),
+    provideTippyLoader(() => import('tippy.js')),
+    provideTippyConfig({
+      defaultVariation: 'tooltip',
+      variations: {
+        tooltip: tooltipVariation,
+        popper: popperVariation,
+      },
+    }),
     provideAppInitializer(() => inject(AuthStore).init()),
   ],
 };

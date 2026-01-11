@@ -17,8 +17,7 @@
       <li class="text-sm gap-x-2 mt-1.5 flex items-center w-full">
         <ng-icon (click)="openEditLegendModalHandler(item)" class="text-base cursor-pointer" name="heroPencilSquare"/>
         <span
-          [appTooltip]="item?.name"
-          appTooltipTheme="light"
+          [tp]="item?.name"
           (click)="selectItemHandler(item.id)"
           class="line-clamp-1 w-full
                  {{ item.id === selectedLegendBlock()?.id ? 'text-blue-400 mt-0.5 cursor-pointer' : 'text-gray-400 mt-0.5 cursor-pointer' }}"

@@ -1,11 +1,11 @@
 <app-page-container caption="Użytkownicy">
   <ng-container actions [ngTemplateOutlet]="actionsTpl"/>
 
-  <div class="flex flex-col max-w-3xl">
+  <div class="flex flex-col w-fit">
     <app-shared-table
       [config]="config"
       [datasource]="dataSource()"
-      [templates]="[ nameTpl, createdAtTpl, roleTpl ]"
+      [templates]="[ nameTpl, createdAtTpl, roleTpl, eventsTpl, buttonsTpl ]"
     >
       <ng-template #nameTpl let-dataItem="dataItem">
         <div class="flex items-center gap-x-2">
@@ -34,6 +34,31 @@
           {{ dataItem?.role }}
         </span>
       </ng-template>
+
+      <ng-template #eventsTpl let-dataItem="dataItem">
+        <div class="flex gap-x-1">
+          <div
+            class="w-7 h-7 font-bold cursor-pointer text-gray-700 rounded-full text-xs flex justify-center items-center bg-gray-300">
+            {{ dataItem?.name | appInitials }}
+          </div>
+
+          <div
+            class="w-7 h-7 font-bold cursor-pointer text-gray-700 rounded-full text-xs flex justify-center items-center bg-gray-300">
+            {{ dataItem?.name | appInitials }}
+          </div>
+
+          <div
+            class="w-7 h-7 font-bold cursor-pointer text-gray-700 rounded-full text-xs flex justify-center items-center bg-gray-300">
+            {{ dataItem?.name | appInitials }}
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #buttonsTpl let-dataItem="dataItem">
+        <button tp="Zresetuj hasło" type="button" class="flex items-center cursor-pointer">
+          <ng-icon class="text-xl" name="heroLockClosed" />
+        </button>
+      </ng-template>
     </app-shared-table>
     <app-pagination [currentPage]="1" [totalPages]="10" [pageSize]="10"/>
   </div>
@@ -43,20 +68,4 @@
   <app-button size="md" btnType="button">
     Dodaj nowego użytkownika
   </app-button>
-</ng-template>
-
-<ng-template #loadingTpl>
-  <div class="grid mt-4 gap-4 grid-cols-5">
-    <div class="w-full rounded h-56 border border-solid border-gray-200 bg-gray-100 animate-pulse">
-    </div>
-
-    <div class="w-full rounded h-56 border border-solid border-gray-200 bg-gray-100 animate-pulse">
-    </div>
-
-    <div class="w-full rounded h-56 border border-solid border-gray-200 bg-gray-100 animate-pulse">
-    </div>
-
-    <div class="w-full rounded h-56 border border-solid border-gray-200 bg-gray-100 animate-pulse">
-    </div>
-  </div>
 </ng-template>

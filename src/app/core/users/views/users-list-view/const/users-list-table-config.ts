@@ -20,12 +20,22 @@ export const USERS_LIST_TABLE_CONFIG: ITableConfig = {
     {
       caption: 'Data utworzenia',
       templateName: 'createdAtTpl',
-      width: 160,
+      width: 180,
     },
     {
       caption: 'Rola',
       templateName: 'roleTpl',
-      width: 140,
+      width: 180,
+    },
+    {
+      caption: 'Wydarzenia',
+      templateName: 'eventsTpl',
+      width: 220,
+    },
+    {
+      caption: 'Akcje',
+      templateName: 'buttonsTpl',
+      width: 220,
     },
   ],
 };

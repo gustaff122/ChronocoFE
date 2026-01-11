@@ -2,6 +2,10 @@
 @import '@angular/cdk/overlay-prebuilt.css';
 @import "tailwindcss";
 
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/themes/light.css';
+@import 'tippy.js/animations/scale.css';
+
 @theme {
   --z-index-2xl: 2147483647;
   --z-index-xl: 2147483646;

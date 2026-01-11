@@ -5,10 +5,10 @@ import { SchedulerBlockTypeColorIntensePipe } from '@chronoco/pipes/scheduler-bl
 import { SchedulerTranslateBlockTypePipe } from '@chronoco/pipes/scheduler-translate-block-type.pipe';
 import { LegendType } from '@chronoco/models/legend-type.enum';
 import { ILegend } from '@chronoco/models/i-legend';
-import { TooltipDirective } from '@chronoco/ui/tooltip/tooltip.directive';
 import { SchedulerLegendStore } from '../../../../stores/scheduler-legend.store';
 import { SchedulerInstancesStore } from '../../../../stores/scheduler-instances.store';
 import { Dialog } from '@angular/cdk/dialog';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-scheduler-sidebar-blocks-list',
@@ -16,7 +16,7 @@ import { Dialog } from '@angular/cdk/dialog';
     SchedulerTranslateBlockTypePipe,
     NgIcon,
     SchedulerBlockTypeColorIntensePipe,
-    TooltipDirective,
+    TippyDirective,
   ],
   templateUrl: './scheduler-sidebar-blocks-list.component.html',
   styleUrl: './scheduler-sidebar-blocks-list.component.css',

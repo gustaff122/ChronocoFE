@@ -34,6 +34,7 @@
     "@angular/ssr": "^21.0.0",
     "@ng-icons/core": "^32.1.0",
     "@ng-icons/heroicons": "^32.1.0",
+    "@ngneat/helipopper": "^12.1.0",
     "@tailwindcss/postcss": "^4.1.14",
     "express": "^5.1.0",
     "postcss": "^8.5.6",

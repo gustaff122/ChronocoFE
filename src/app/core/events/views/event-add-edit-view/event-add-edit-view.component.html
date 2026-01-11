@@ -14,9 +14,11 @@
     <ng-icon class="text-3xl text-blue-700 animate-spin" name="heroArrowPath"/>
   }
 
-  <app-button severity="danger" btnType="button" (click)="openDeletingModal()">
+  @if (editedEvent()?.name) {
+    <app-button severity="danger" btnType="button" (click)="openDeletingModal()">
     Usuń wydarzenie
   </app-button>
+  }
 </ng-template>
 
 <ng-template #loadingTpl>
