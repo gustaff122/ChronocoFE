@@ -43,6 +43,6 @@ jobs:
           key: ${{ secrets.MIKRUS_SSH_KEY }}
           port: ${{ secrets.MIKRUS_PORT }}
           script: |
-            cd /home/kakkoii/apps/chronoco-frontend/ChronocoFE/server
+            cd /home/kakkoii/apps/chronoco-frontend/dist/ChronocoFE/server
             pm2 delete CHRONOCO_ANGULAR || true
             pm2 start "node server.mjs" --name CHRONOCO_ANGULAR
