@@ -93,7 +93,7 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ChronocoFE:build:production",
+              "buildTarget": "ChronocoFE:build:production"
             },
             "development": {
               "buildTarget": "ChronocoFE:build:development"
