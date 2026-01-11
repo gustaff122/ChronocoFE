@@ -1,0 +1,50 @@
+<app-page-container caption="Dodaj nowego użytkownika"
+                    [previousPage]="['/', RoutesEnum.USERS]"
+>
+  <ng-container actions [ngTemplateOutlet]="actionTpl"/>
+
+  <form
+    (ngSubmit)="submitHandler()"
+    animate.enter="appear" class="grid grid-cols-2 max-w-xl gap-4">
+    <app-input theme="light"
+               label="Login"
+               placeholder="adam.kowal"
+               class="col-span-2"
+               [field]="form.login"
+    />
+
+    <app-input theme="light"
+               label="Nazwa użytkownika"
+               placeholder="Adam Kowal"
+               class="col-span-2"
+               [field]="form.name"
+    />
+
+    <app-input theme="light"
+               label="Hasło"
+               inputType="password"
+               placeholder="***********"
+               class="col-span-2"
+               [field]="form.password"
+    />
+
+    <div class="col-span-2 flex justify-end">
+      <app-button (click)="submitHandler()"
+                  [class.animate-pulse]="loading()"
+                  size="lg"
+                  btnType="button"
+                  [disabled]="form().disabled()"
+      >
+        <div class="flex items-center justify-center gap-x-2">
+          <span>Dodaj użytkownika</span>
+        </div>
+      </app-button>
+    </div>
+  </form>
+</app-page-container>
+
+<ng-template #actionTpl>
+  @if (loading()) {
+      <ng-icon class="text-3xl text-blue-700 animate-spin" name="heroArrowPath"/>
+  }
+</ng-template>

@@ -2,30 +2,32 @@
   <ng-container actions [ngTemplateOutlet]="actionsTpl"/>
 
   <div class="flex flex-col w-fit">
-    <app-shared-table
-      [config]="config"
-      [datasource]="dataSource()"
-      [templates]="[ nameTpl, createdAtTpl, roleTpl, eventsTpl, buttonsTpl ]"
-    >
-      <ng-template #nameTpl let-dataItem="dataItem">
-        <div class="flex items-center gap-x-2">
-          <div class="w-7 h-7 font-bold text-xs text-blue-700 rounded flex justify-center items-center bg-blue-300">
-            {{ dataItem?.name | appInitials }}
-          </div>
+    <ng-container [ngTemplateOutlet]="loading() ? loadingTpl : contentTpl" />
 
-          <span>
+    <ng-template #loadingTpl>
+      <div class="w-[888px] rounded h-56 border border-solid border-gray-200 bg-gray-100 animate-pulse">
+      </div>
+    </ng-template>
+
+    <ng-template #contentTpl>
+      <app-shared-table
+        [config]="config"
+        [datasource]="dataSource()"
+        [templates]="[ nameTpl, roleTpl, buttonsTpl ]"
+      >
+        <ng-template #nameTpl let-dataItem="dataItem">
+          <div class="flex items-center gap-x-2">
+            <div class="w-7 h-7 font-bold text-xs text-blue-700 rounded flex justify-center items-center bg-blue-300">
+              {{ dataItem?.name | appInitials }}
+            </div>
+
+            <span>
             {{ dataItem?.name }}
           </span>
-        </div>
-      </ng-template>
+          </div>
+        </ng-template>
 
-      <ng-template #createdAtTpl let-dataItem="dataItem">
-        <span class="text-gray-500">
-          {{ dataItem?.createdAt | date : 'dd.MM.yyyy, HH:mm' }}
-        </span>
-      </ng-template>
-
-      <ng-template #roleTpl let-dataItem="dataItem">
+        <ng-template #roleTpl let-dataItem="dataItem">
         <span class="px-2 py-0.5 tracking-wider font-medium rounded text-gray-50 text-xs"
               [class.bg-rose-500]="dataItem?.role === UserRoleEnum.SUPERADMIN"
               [class.bg-emerald-500]="dataItem?.role === UserRoleEnum.ADMIN"
@@ -33,39 +35,24 @@
         >
           {{ dataItem?.role }}
         </span>
-      </ng-template>
+        </ng-template>
 
-      <ng-template #eventsTpl let-dataItem="dataItem">
-        <div class="flex gap-x-1">
-          <div
-            class="w-7 h-7 font-bold cursor-pointer text-gray-700 rounded-full text-xs flex justify-center items-center bg-gray-300">
-            {{ dataItem?.name | appInitials }}
-          </div>
+        <ng-template #buttonsTpl let-dataItem="dataItem">
+          <button tp="Funkcja niewydana | Zresetuj hasło" type="button" class="flex items-center cursor-not-allowed opacity-50">
+            <ng-icon class="text-xl" name="heroLockClosed" />
+          </button>
+        </ng-template>
+      </app-shared-table>
+    </ng-template>
 
-          <div
-            class="w-7 h-7 font-bold cursor-pointer text-gray-700 rounded-full text-xs flex justify-center items-center bg-gray-300">
-            {{ dataItem?.name | appInitials }}
-          </div>
-
-          <div
-            class="w-7 h-7 font-bold cursor-pointer text-gray-700 rounded-full text-xs flex justify-center items-center bg-gray-300">
-            {{ dataItem?.name | appInitials }}
-          </div>
-        </div>
-      </ng-template>
-
-      <ng-template #buttonsTpl let-dataItem="dataItem">
-        <button tp="Zresetuj hasło" type="button" class="flex items-center cursor-pointer">
-          <ng-icon class="text-xl" name="heroLockClosed" />
-        </button>
-      </ng-template>
-    </app-shared-table>
-    <app-pagination [currentPage]="1" [totalPages]="10" [pageSize]="10"/>
+<!--    <app-pagination [currentPage]="1" [totalPages]="10" [pageSize]="10"/>-->
   </div>
 </app-page-container>
 
 <ng-template #actionsTpl>
-  <app-button size="md" btnType="button">
-    Dodaj nowego użytkownika
-  </app-button>
+  <a [routerLink]="['/', RoutesEnum.USERS, RoutesEnum.USERS_ADD]">
+    <app-button size="md" btnType="button">
+      Dodaj nowego użytkownika
+    </app-button>
+  </a>
 </ng-template>

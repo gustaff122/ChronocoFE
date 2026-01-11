@@ -1,38 +1,18 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, ResourceRef, Signal } from '@angular/core';
+import { UsersService } from '@chronoco/services/users-service/users.service';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { ITableDatasource } from '@chronoco/ui/shared-table/models/i-table-datasource';
+import { IUser } from '@chronoco/services/auth-service/models/i-user';
 
 @Injectable()
 export class UsersListViewComponentStore {
-  public readonly usersDatasource: Signal<ITableDatasource<any>> = signal({
-    items: [
-      {
-        id: '1',
-        login: 'superman',
-        name: 'Clark Kent',
-        createdAt: '2023-05-10T12:00:00Z',
-        role: 'SUPERADMIN',
-      },
-      {
-        id: '2',
-        login: 'admin123',
-        name: 'Diana Prince',
-        createdAt: '2023-09-22T08:30:00Z',
-        role: 'ADMIN',
-      },
-      {
-        id: '3',
-        login: 'user01',
-        name: 'Bruce Wayne',
-        createdAt: '2024-01-15T14:20:00Z',
-        role: 'USER',
-      },
-      {
-        id: '4',
-        login: 'user02',
-        name: 'Barry Allen',
-        createdAt: '2024-07-01T09:10:00Z',
-        role: 'USER',
-      },
-    ],
+  private readonly usersService: UsersService = inject(UsersService);
+
+  private readonly _list: ResourceRef<IUser[]> = rxResource({
+    stream: () => this.usersService.getUsers(),
+    defaultValue: [],
   });
+
+  public readonly loading: Signal<boolean> = computed(() => this._list.isLoading());
+  public readonly dataSource: Signal<ITableDatasource<IUser[]>> = computed(() => ({items: this._list.value()}))
 }
