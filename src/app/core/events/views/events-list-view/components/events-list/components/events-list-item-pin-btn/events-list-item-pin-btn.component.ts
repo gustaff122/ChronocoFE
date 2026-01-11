@@ -28,6 +28,8 @@ export class EventsListItemPinBtnComponent {
   public readonly isSelected: Signal<boolean> = computed(() => this.eventId() === this.authStore.user().selectedEvent);
 
   public pinHandler(): void {
-    this.componentStore.selectEvent(this.eventId());
+    if (!this.isSelected()) {
+      this.componentStore.selectEvent(this.eventId());
+    }
   }
 }

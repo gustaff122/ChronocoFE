@@ -22,4 +22,8 @@ export class AuthService {
   public logout(): Observable<void> {
     return this.httpClient.delete<void>(`${this.API_URL}/auth/logout`);
   }
+
+  public refresh(): Observable<IUser> {
+    return this.httpClient.get<IUser>(`${this.API_URL}/auth/refresh`);
+  }
 }
