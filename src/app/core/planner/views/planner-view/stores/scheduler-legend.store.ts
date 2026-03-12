@@ -28,6 +28,13 @@ export class SchedulerLegendStore {
     return blocks.filter(({ name }) => regex.test(name));
   });
 
+  public initLegends(legends: ILegend[]) {
+    this._legendBlocks.set(legends);
+  }
+
+  public addLegendBySocket(legend: ILegend) {
+    this._legendBlocks.update(state => ([ ...state, legend ]));
+  }
 
   public createLegendDefinition(name: string, type: LegendType, description: string): void {
     const legend: ILegend = {
@@ -41,11 +48,20 @@ export class SchedulerLegendStore {
     this._legendBlocks.update(state => ([ ...state, legend ]));
   }
 
-  public updateLegendDefinition(legendId: string, updates: Partial<Omit<ILegend, 'id'>>): void {
-    this._legendBlocks.update(state => state.map(el => el.id === legendId ? { ...el, ...updates } : el));
+  public updateLegendDefinition(legendId: string, updated: Partial<Omit<ILegend, 'id'>>): void {
+    this.plannersSocketSender.sendMessage(PlannersClientMessages.UPDATE_LEGEND, { id: legendId, changes: updated });
+    this._legendBlocks.update(state => state.map(el => el.id === legendId ? { ...el, ...updated } : el));
+  }
+
+  public updateLegendDefinitionBySocket(legend: ILegend): void {
+    this._legendBlocks.update(state => (state.map(el => el?.id === legend.id ? legend : el)));
   }
 
   public deleteLegendDefinition(legendId: string): void {
+    this.plannersSocketSender.sendMessage(PlannersClientMessages.REMOVE_LEGEND, { id: legendId });
+    this._legendBlocks.update(state => state.filter(({ id }) => id !== legendId));
+  }
+  public removeLegendBySocket(legendId: string): void {
     this._legendBlocks.update(state => state.filter(({ id }) => id !== legendId));
   }
 

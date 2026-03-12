@@ -21,13 +21,13 @@
   </form>
 
   <div [style.height]="'calc(100vh - 28px - 98px - 16px - 50px)'" class="flex flex-col gap-y-4 overflow-y-auto">
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.LECTURE"/>
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.PANEL"/>
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.COMPETITION"/>
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.CONCERT"/>
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.MOVIE"/>
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.TECHNICAL"/>
-    <app-scheduler-sidebar-blocks-list [blocksType]="EventBlockType.OTHER"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.LECTURE"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.PANEL"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.COMPETITION"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.CONCERT"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.MOVIE"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.TECHNICAL"/>
+    <app-scheduler-sidebar-blocks-list [type]="EventBlockType.OTHER"/>
   </div>
 
   <div class="absolute w-full left-0 bottom-0 p-5 rounded-xl bg-gray-900">

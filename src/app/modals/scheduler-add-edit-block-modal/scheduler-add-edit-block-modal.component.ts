@@ -16,7 +16,7 @@ import { ISelectOption } from '@chronoco/models/i-select-option';
 
 interface IAddLegendForm {
   name: FormControl<string>;
-  blocksType: FormControl<LegendType>;
+  type: FormControl<LegendType>;
   description: FormControl<string>;
 }
 
@@ -69,8 +69,8 @@ export class SchedulerAddEditBlockModalComponent implements OnInit {
   }
 
   private addLegendHandler(): void {
-    const { name, blocksType, description } = this.form.getRawValue();
-    this.legendStore.createLegendDefinition(name, blocksType, description);
+    const { name, type, description } = this.form.getRawValue();
+    this.legendStore.createLegendDefinition(name, type, description);
   }
 
   private editLegendHandler(): void {
@@ -96,7 +96,7 @@ export class SchedulerAddEditBlockModalComponent implements OnInit {
 
     this.form = this.formBuilder.group<IAddLegendForm>({
       name: new FormControl(this.editedLegend?.name, [ Validators.required ]),
-      blocksType: new FormControl(blockTypeValue, [ Validators.required ]),
+      type: new FormControl(blockTypeValue, [ Validators.required ]),
       description: new FormControl(this.editedLegend?.description),
     });
   }

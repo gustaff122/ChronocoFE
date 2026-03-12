@@ -25,13 +25,13 @@ import { TippyDirective } from '@ngneat/helipopper';
   ],
 })
 export class SchedulerSidebarBlocksListComponent {
-  public blocksType: InputSignal<LegendType> = input.required();
+  public type: InputSignal<LegendType> = input.required();
 
   private readonly legendStore: SchedulerLegendStore = inject(SchedulerLegendStore);
   private readonly instancesStore: SchedulerInstancesStore = inject(SchedulerInstancesStore);
   private readonly dialog: Dialog = inject(Dialog);
 
-  public readonly legends: Signal<ILegend[]> = computed(() => this.legendStore.filteredLegends().filter(({ type }) => type === this.blocksType()));
+  public readonly legends: Signal<ILegend[]> = computed(() => this.legendStore.filteredLegends().filter(({ type }) => type === this.type()));
 
   public readonly selectedLegendBlock: Signal<ILegend> = this.legendStore.selectedLegendBlock;
 

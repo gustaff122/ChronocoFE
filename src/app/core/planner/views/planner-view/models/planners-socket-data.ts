@@ -1,4 +1,4 @@
-import { IInstance, ILegend } from '@chronoco/models/i-legend';
+import { IInstance, IInstancePayload, ILegend } from '@chronoco/models/i-legend';
 import { PlannersSocketMessages } from './planners-socket-messages';
 
 export interface PlannersSocketData {
@@ -6,22 +6,25 @@ export interface PlannersSocketData {
     users: string[];
     planner: {
       id: string;
-      instances: IInstance[];
+      instances: IInstancePayload[];
+      legends: ILegend[];
     };
-    legends: ILegend[];
   };
 
   [PlannersSocketMessages.USER_JOINED]: {
-    users: { id: string; name: string }[];
+    user: string;
   };
 
   [PlannersSocketMessages.USER_LEFT]: {
     username: string;
   };
 
-  [PlannersSocketMessages.INSTANCE_ADDED]: IInstance;
+  [PlannersSocketMessages.INSTANCE_ADDED]: IInstancePayload;
 
-  [PlannersSocketMessages.INSTANCE_UPDATED]: IInstance;
+  [PlannersSocketMessages.INSTANCE_UPDATED]: {
+    updated: IInstancePayload;
+    userId: string;
+  };
 
   [PlannersSocketMessages.INSTANCE_REMOVED]: {
     id: IInstance['id'];

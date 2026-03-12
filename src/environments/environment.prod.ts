@@ -1,4 +1,4 @@
 export const environment = {
-  API_URL: 'https://api-chronoco.dev122.pl/api',
-  SOCKET_PLANNER_URL: 'wss://api-chronoco.dev122.pl',
+  API_URL: 'https://chronoco-api.dev122.pl/api',
+  SOCKET_PLANNER_URL: 'wss://chronoco-api.dev122.pl',
 };

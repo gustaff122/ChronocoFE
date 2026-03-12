@@ -1,40 +1,91 @@
 import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { IInstance, IInstancePosition } from '@chronoco/models/i-legend';
+import { IInstance, IInstancePayload, IInstancePosition } from '@chronoco/models/i-legend';
 import { ulid } from 'ulid';
 import { SchedulerGridComponentStore } from '../components/scheduler-grid/scheduler-grid.component.store';
+import { PlannersClientMessages } from '../models/planners-socket-messages';
+import { PlannersSocketSenderService } from '../services/planners-socket/planners-socket-sender.service';
+import { AuthStore } from '@chronoco/stores/auth-store/auth.store';
 
 @Injectable()
 export class SchedulerInstancesStore {
   private readonly gridStore: SchedulerGridComponentStore = inject(SchedulerGridComponentStore);
+  private readonly plannersSocketSender: PlannersSocketSenderService = inject(PlannersSocketSenderService);
+  private readonly authStore: AuthStore = inject(AuthStore);
 
   private readonly _instances: WritableSignal<IInstance[]> = signal([]);
 
   public readonly instances: Signal<IInstance[]> = this._instances.asReadonly();
 
+  private readonly lastUpdatedInstance: WritableSignal<IInstance> = signal(null);
+  private readonly isJustCreated: WritableSignal<boolean> = signal(false);
+
   public create(instance: Omit<IInstance, 'id' | 'zIndex'>): IInstance {
     const newInstance: IInstance = {
       ...instance,
-      id: `instance-${ulid()}`,
+      id: ulid(),
       zIndex: this.instances().length + 1,
     };
 
     this._instances.update(instances => [ ...instances, newInstance ]);
+    this.isJustCreated.set(true)
     return newInstance;
+  }
+
+  public initInstances(instances: IInstancePayload[]): void {
+    this._instances.set(instances.map(e => this.mapPayloadToInstance(e)))
+  }
+
+  public addInstanceFromSocket(instance: IInstancePayload): void {
+    this._instances.update(instances => [ ...instances, this.mapPayloadToInstance(instance) ]);
   }
 
   public update(instanceId: string, position: Partial<IInstancePosition>): void {
     this._instances.update(instances => {
       return instances.map(instance => {
         if (instance.id !== instanceId) return instance;
-        const updatedPosition = { ...instance.position, ...position };
 
-        return { ...instance, position: updatedPosition };
+        const updatedPosition = { ...instance.position, ...position };
+        const updatedInstance =  { ...instance, position: updatedPosition }
+        this.lastUpdatedInstance.set(updatedInstance);
+        return updatedInstance
       });
     });
   }
 
-  public delete(instanceId: string): void {
-    this._instances.update(state => (state.filter(instance => instance.id !== instanceId)));
+  public sendUpdateToSocket(): void {
+    if (this.isJustCreated()) {
+      this.plannersSocketSender.sendMessage(PlannersClientMessages.ADD_INSTANCE, {instance: this.mapInstanceToPayload(this.lastUpdatedInstance())});
+      this.isJustCreated.set(false);
+    } else {
+      this.plannersSocketSender.sendMessage(PlannersClientMessages.UPDATE_INSTANCE,
+        { id: this.lastUpdatedInstance().id, changes: this.mapInstanceToPayload(this.lastUpdatedInstance()) }
+      );
+    }
+  }
+
+  public updateInstanceFromSocket( data: { updated: IInstancePayload, userId: string }): void {
+    if (data.userId === this.authStore.user().id) return;
+
+    const mapped = this.mapPayloadToInstance(data.updated);
+
+    this._instances.update(instances =>
+      instances.map(i => {
+        return i.id.trim() === mapped.id.trim() ? mapped : i;
+      })
+    );
+  }
+
+  public delete(id: string): void {
+    this._instances.update(state => (state.filter(instance => instance.id !== id)));
+    this.plannersSocketSender.sendMessage(PlannersClientMessages.REMOVE_INSTANCE, { id });
+  }
+
+  public deleteBySocket(id: string): void {
+    this._instances.update(state => (state.filter(instance => instance.id != id)));
+  }
+
+  public deleteBySocketByLegendId(legendId: string): void {
+    this._instances.update(state => (state.filter(instance => instance.legendId.trim() !== legendId)));
   }
 
   public deleteByLegendId(legendId: string): void {
@@ -93,4 +144,27 @@ export class SchedulerInstancesStore {
     });
   }
 
+  private mapPayloadToInstance(payload: IInstancePayload): IInstance {
+    return {
+      id: payload.id.trim(),
+      legendId: payload.legend.id,
+      zIndex: payload.zIndex,
+      position: {
+        rooms: payload.rooms,
+        startTime: new Date(payload.startTime),
+        endTime: new Date(payload.endTime),
+      }
+    };
+  }
+
+  public mapInstanceToPayload(instance: IInstance): IInstancePayload {
+    return {
+      id: instance.id,
+      legend: { id: instance.legendId },
+      zIndex: instance.zIndex,
+      rooms: instance.position.rooms,
+      startTime: instance.position.startTime,
+      endTime: instance.position.endTime
+    };
+  }
 }

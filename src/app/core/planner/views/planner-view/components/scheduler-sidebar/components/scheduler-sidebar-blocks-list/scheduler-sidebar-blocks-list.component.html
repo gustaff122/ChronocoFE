@@ -1,9 +1,9 @@
 <div class="flex items-center mb-1 gap-x-1.5 relative">
-  <div class="{{ blocksType() | appSchedulerBlockTypeColorIntense}} rounded-sm w-3.5 h-3.5">
+  <div class="{{ type() | appSchedulerBlockTypeColorIntense}} rounded-sm w-3.5 h-3.5">
   </div>
 
   <h3 class="font-medium text-gray-300 tracking-wide text-sm">
-    {{ blocksType() | appSchedulerTranslateBlockType }}
+    {{ type() | appSchedulerTranslateBlockType }}
   </h3>
 
   <button type="button" (click)="roll()" class="flex cursor-pointer justify-center items-center absolute right-0 top-1/2 -translate-x-1/2">

@@ -33,6 +33,10 @@ export class SchedulerGridBlocksComponent implements OnDestroy {
   public readonly rooms: Signal<IRoom[]> = this.gridStore.rooms;
   public readonly eventInstances: Signal<IInstance[]> = this.instancesStore.instances;
 
+  constructor() {
+    this.interactionsStore.interactionContainer = this.interactionContainer;
+  }
+
   public ngOnDestroy(): void {
     this.interactionsStore.cleanup();
   }
@@ -51,10 +55,7 @@ export class SchedulerGridBlocksComponent implements OnDestroy {
 
   public stopScrollHandler(): void {
     this.gridScrollStore.stopAutoScroll();
-  }
-
-  constructor() {
-    this.interactionsStore.interactionContainer = this.interactionContainer;
+    this.instancesStore.sendUpdateToSocket();
   }
 
   public readonly blockStyle = computed(() => {

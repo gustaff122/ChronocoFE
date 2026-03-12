@@ -27,3 +27,14 @@ export interface IOperationalInstance {
   left: number,
   height: number,
 }
+
+export interface IInstancePayload {
+  id: string;
+  legend: {
+    id: string;
+  };
+  zIndex: number;
+  rooms: string[];
+  startTime: Date;
+  endTime: Date;
+}
