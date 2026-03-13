@@ -9,6 +9,7 @@ import { SchedulerGridInteractionsStore } from '../../../../stores/scheduler-gri
 import { SchedulerSearchStore } from '../../../../stores/scheduler-search.store';
 import { SchedulerLegendStore } from '../../../../stores/scheduler-legend.store';
 import { SchedulerGridScrollStore } from '../../../../stores/scheduler-grid-scroll.store';
+import { Dialog } from '@angular/cdk/dialog';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class SchedulerGridBlocksComponent implements OnDestroy {
   private readonly searchStore: SchedulerSearchStore = inject(SchedulerSearchStore);
   private readonly legendStore: SchedulerLegendStore = inject(SchedulerLegendStore);
   private readonly gridScrollStore: SchedulerGridScrollStore = inject(SchedulerGridScrollStore);
+  private readonly dialog: Dialog = inject(Dialog);
 
   public readonly rooms: Signal<IRoom[]> = this.gridStore.rooms;
   public readonly eventInstances: Signal<IInstance[]> = this.instancesStore.instances;
@@ -49,13 +51,33 @@ export class SchedulerGridBlocksComponent implements OnDestroy {
     this.interactionsStore.onBlockMouseMove($event, block);
   }
 
+  public changeLegend(legendId: string): void {
+    const legend = this.legendStore.legendBlocks().find((d) => d.id === legendId);
+
+    import('@chronoco/modals/scheduler-add-edit-block-modal/scheduler-add-edit-block-modal.component').then(({ SchedulerAddEditBlockModalComponent }) => {
+      this.dialog.open(SchedulerAddEditBlockModalComponent, {
+        data: { legend },
+        providers: [
+          {
+            provide: SchedulerLegendStore,
+            useValue: this.legendStore,
+          },
+          {
+            provide: SchedulerInstancesStore,
+            useValue: this.instancesStore,
+          },
+        ],
+      });
+    });
+  }
+
   public onBlockMouseLeave($event: MouseEvent): void {
     this.interactionsStore.onBlockMouseLeave($event);
   }
 
   public stopScrollHandler(): void {
     this.gridScrollStore.stopAutoScroll();
-    this.instancesStore.sendUpdateToSocket();
+    this.instancesStore.sendUpdateToSocket().then(() => this.instancesStore.clearEmpties());
   }
 
   public readonly blockStyle = computed(() => {
@@ -64,7 +86,7 @@ export class SchedulerGridBlocksComponent implements OnDestroy {
       const instanceLegend = this.legendStore.filteredLegends().find(({ id }) => id === instance.legendId);
 
       return {
-        instance,
+        instance: instance,
         ...this.instancesStore.getPositionStyle(instance.position),
         opacity: search
           ? (instanceLegend?.name.toLowerCase().includes(search.toLowerCase()) ? '1' : '0.6')

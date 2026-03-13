@@ -1,4 +1,4 @@
-<lib-modal caption="{{ editedLegend ? 'Aktualizuj' : 'Dodaj nową' }} atrakcję">
+<lib-modal caption="{{ editedData?.legend?.name ? 'Aktualizuj' : 'Dodaj nową' }} atrakcję">
 
   <form [formGroup]="form" (ngSubmit)="submitHandler()" class="flex flex-col gap-y-5">
     <app-input formControlName="name" inputId="name" inputType="text" placeholder="Niesamowita atrakcja" label="Nazwa atrakcji"/>
@@ -7,7 +7,7 @@
 
 
     <div class="flex justify-end gap-x-3">
-      @if (editedLegend) {
+      @if (editedData?.legend?.name) {
         <app-button (click)="openDeleteOverlay()" btnType="button" class="w-fit" severity="danger" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
           Usuń atrakcję
         </app-button>
@@ -33,8 +33,8 @@
         </ng-template>
       }
 
-      <app-button btnType="submit" class="w-fit" severity="primary">
-        {{ editedLegend ? 'Aktualizuj' : 'Dodaj' }}
+      <app-button btnType="submit" class="w-fit {{ form.invalid ? 'opacity-70' : '' }}" severity="primary">
+        {{ editedData?.legend?.name ? 'Aktualizuj' : 'Dodaj' }}
       </app-button>
     </div>
   </form>

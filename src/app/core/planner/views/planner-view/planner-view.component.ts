@@ -1,7 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SchedulerHeaderComponent } from './components/scheduler-header/scheduler-header.component';
 import { SchedulerGridComponent } from './components/scheduler-grid/scheduler-grid.component';
-import { SchedulerSidebarComponent } from './components/scheduler-sidebar/scheduler-sidebar.component';
 import { IRoom } from '@chronoco/models/i-room';
 import { SchedulerGridScrollStore } from './stores/scheduler-grid-scroll.store';
 import { SchedulerGridComponentStore } from './components/scheduler-grid/scheduler-grid.component.store';
@@ -23,7 +22,6 @@ import { PlannersSocketService } from './services/planners-socket/planners-socke
   imports: [
     SchedulerGridComponent,
     SchedulerHeaderComponent,
-    SchedulerSidebarComponent,
   ],
   templateUrl: './planner-view.component.html',
   styleUrl: './planner-view.component.css',

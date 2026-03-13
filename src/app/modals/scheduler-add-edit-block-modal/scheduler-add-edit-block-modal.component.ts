@@ -8,7 +8,7 @@ import { ButtonComponent } from '@chronoco/ui/button/button.component';
 import { SelectInputComponent } from '@chronoco/ui/select-input/select-input.component';
 import { InputComponent } from '@chronoco/ui/input/input.component';
 import { TextareaComponent } from '@chronoco/ui/textarea/textarea.component';
-import { ILegend } from '@chronoco/models/i-legend';
+import { IInstance, ILegend } from '@chronoco/models/i-legend';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { SchedulerLegendStore } from '@chronoco/core/planner/views/planner-view/stores/scheduler-legend.store';
 import { SchedulerInstancesStore } from '@chronoco/core/planner/views/planner-view/stores/scheduler-instances.store';
@@ -39,7 +39,7 @@ interface IAddLegendForm {
   ],
 })
 export class SchedulerAddEditBlockModalComponent implements OnInit {
-  public editedLegend: ILegend = inject(DIALOG_DATA);
+  public editedData: { legend: ILegend, instance: IInstance } = inject(DIALOG_DATA);
 
   private readonly legendStore: SchedulerLegendStore = inject(SchedulerLegendStore);
   private readonly instancesStore: SchedulerInstancesStore = inject(SchedulerInstancesStore);
@@ -50,7 +50,7 @@ export class SchedulerAddEditBlockModalComponent implements OnInit {
   public readonly blockTypes: Signal<LegendType[]> = computed(() => Object.values(LegendType));
   public readonly blockTypesOptions: Signal<ISelectOption[]> = computed(() => Object.values(LegendType).map((el) => ({ display: this.schedulerTranslateBlockTypePipe.transform(el), value: el })));
 
-  public isDeleteOverlayOpen: WritableSignal<boolean> = signal(false);
+  public readonly isDeleteOverlayOpen: WritableSignal<boolean> = signal(false);
 
   public form: FormGroup<IAddLegendForm>;
 
@@ -59,22 +59,27 @@ export class SchedulerAddEditBlockModalComponent implements OnInit {
   }
 
   public submitHandler(): void {
-    if (this.editedLegend) {
-      this.editLegendHandler();
-    } else {
-      this.addLegendHandler();
+    if (this.form.invalid) {
+      return
     }
 
-    this.dialogRef.close();
+    if (this.editedData?.legend?.name) {
+      this.editLegendHandler();
+      this.dialogRef.close();
+    } else {
+      const legendId = this.addLegendHandler();
+      this.dialogRef.close(legendId);
+    }
   }
 
-  private addLegendHandler(): void {
+  private addLegendHandler(): string {
     const { name, type, description } = this.form.getRawValue();
-    this.legendStore.createLegendDefinition(name, type, description);
+    const { id } = this.legendStore.createLegendDefinition(name, type, description);
+    return id
   }
 
   private editLegendHandler(): void {
-    this.legendStore.updateLegendDefinition(this.editedLegend.id, this.form.getRawValue());
+    this.legendStore.updateLegendDefinition(this.editedData?.legend.id, this.form.getRawValue());
   }
 
   public openDeleteOverlay(): void {
@@ -86,18 +91,19 @@ export class SchedulerAddEditBlockModalComponent implements OnInit {
   }
 
   public deleteLegendHandler(): void {
-    this.legendStore.deleteLegendDefinition(this.editedLegend.id);
-    this.instancesStore.deleteByLegendId(this.editedLegend.id);
+    this.legendStore.deleteLegendDefinition(this.editedData?.legend?.id);
+    this.instancesStore.deleteByLegendId(this.editedData?.legend?.id);
+    this.instancesStore.clearEmpties();
     this.dialogRef.close();
   }
 
   private buildForm(): void {
-    const blockTypeValue = this.editedLegend?.type || this.blockTypes()[0];
+    const blockTypeValue = this.editedData?.legend?.type || this.blockTypes()[0];
 
     this.form = this.formBuilder.group<IAddLegendForm>({
-      name: new FormControl(this.editedLegend?.name, [ Validators.required ]),
+      name: new FormControl(this.editedData?.legend?.name, [ Validators.required ]),
       type: new FormControl(blockTypeValue, [ Validators.required ]),
-      description: new FormControl(this.editedLegend?.description),
+      description: new FormControl(this.editedData?.legend?.description),
     });
   }
 }

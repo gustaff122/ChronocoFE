@@ -45,10 +45,10 @@ export class SchedulerSidebarBlocksListComponent {
     this.legendStore.selectLegendForDrawing(id);
   }
 
-  public openEditLegendModalHandler(data: ILegend): void {
+  public openEditLegendModalHandler(legend: ILegend): void {
     import('@chronoco/modals/scheduler-add-edit-block-modal/scheduler-add-edit-block-modal.component').then(({ SchedulerAddEditBlockModalComponent }) => {
       this.dialog.open(SchedulerAddEditBlockModalComponent, {
-        data,
+        data : { legend },
         providers: [
           {
             provide: SchedulerLegendStore,

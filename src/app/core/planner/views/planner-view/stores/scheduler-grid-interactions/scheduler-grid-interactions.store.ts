@@ -178,12 +178,8 @@ export class SchedulerGridInteractionsStore implements IInteractionContext {
     event.stopPropagation();
   }
 
-  private createNewInstance(mousePos: { x: number, y: number }, event: MouseEvent) {
+  private createNewInstance(mousePos: { x: number, y: number }, event: MouseEvent): void {
     const selectedLegend = this.legendStore.selectedLegendBlock();
-
-    if (!selectedLegend) {
-      return;
-    }
 
     const colIndex = Math.floor(mousePos.x / this.gridStore.gridSizeX());
     const rowIndex = Math.floor(mousePos.y / this.gridStore.gridSizeY());
@@ -202,7 +198,7 @@ export class SchedulerGridInteractionsStore implements IInteractionContext {
         startTime: startDate,
         endTime: endDate,
       },
-      legendId: selectedLegend.id,
+      legendId: selectedLegend?.id,
     };
 
     const newInstance = this.instancesStore.create(newPosition);

@@ -8,6 +8,7 @@ export interface PlannersClientPayloads {
 
   [PlannersClientMessages.ADD_INSTANCE]: {
     instance: IInstancePayload;
+    legend?: ILegend;
   };
 
   [PlannersClientMessages.UPDATE_INSTANCE]: {

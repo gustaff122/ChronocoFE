@@ -14,6 +14,7 @@
       [style.z-index]="block?.instance.zIndex"
       [style.opacity]="block?.opacity"
       (mousemove)="onBlockMouseMove($event, block)"
+      (dblclick)="changeLegend(block.instance.legendId)"
       (mouseleave)="onBlockMouseLeave($event)">
       <app-scheduler-grid-single-block [block]="block.instance" [id]="block.instance.id"/>
 

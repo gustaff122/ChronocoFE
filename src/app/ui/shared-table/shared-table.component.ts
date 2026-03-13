@@ -48,7 +48,6 @@ export class SharedTableComponent implements OnInit {
   public ngOnInit(): void {
     this.displayedColumns.set(this.config().columns);
     this.initDatasourceChangeListener();
-    console.log(this.templates());
   }
 
   public initDatasourceChangeListener(): void {

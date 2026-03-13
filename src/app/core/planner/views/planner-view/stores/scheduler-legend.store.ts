@@ -36,7 +36,7 @@ export class SchedulerLegendStore {
     this._legendBlocks.update(state => ([ ...state, legend ]));
   }
 
-  public createLegendDefinition(name: string, type: LegendType, description: string): void {
+  public createLegendDefinition(name: string, type: LegendType, description: string): ILegend {
     const legend: ILegend = {
       id: ulid(),
       type,
@@ -44,8 +44,8 @@ export class SchedulerLegendStore {
       description,
     };
 
-    this.plannersSocketSender.sendMessage(PlannersClientMessages.ADD_LEGEND, { legend });
     this._legendBlocks.update(state => ([ ...state, legend ]));
+    return legend
   }
 
   public updateLegendDefinition(legendId: string, updated: Partial<Omit<ILegend, 'id'>>): void {
