@@ -1,7 +1,11 @@
 <div
-  class="w-36 border-t-2 border-gray-100 {{ (time() === '00:00' && !isFirstRow()) && 'border-t-blue-300' }}"
+  class="w-36 relative border-t-2 border-gray-100 {{ (time() === '00:00' && !isFirstRow()) && 'border-t-blue-300' }}"
   [class.border-l-2]="!isLastRow()"
   [class.border-r-2]="isLastColumn() && !isLastRow()"
   [style.height.px]="isLastRow() ? SCHEDULER_HOUR_CAPTION_HEIGHT : (time() | appSchedulerHourHeight : timeFrom() : timeTo())"
 >
+
+  @if (!isLastRow()) {
+    <div class="w-36 h-[2px] top-1/2 absolute -translate-y-1/2 bg-gray-100"></div>
+  }
 </div>

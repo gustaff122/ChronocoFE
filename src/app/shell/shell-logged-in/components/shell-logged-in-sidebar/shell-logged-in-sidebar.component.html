@@ -9,8 +9,11 @@
         <li class="w-full">
           <a
             [routerLink]="item.url"
+            [tp]="item.disabled && item.tooltipOnDisabled"
             routerLinkActive="bg-zinc-800"
-            class="flex text-zinc-300 px-5 rounded-lg hover:text-zinc-400 transition-colors items-center gap-x-4 py-3.5 w-full justify-start"
+            class="flex px-5 rounded-lg transition-colors items-center gap-x-4 py-3.5 w-full justify-start
+            {{ item.disabled ? 'text-zinc-500' : 'text-zinc-300 hover:text-zinc-400' }}
+            "
           >
             <ng-icon class="text-2xl" [name]="item.icon"/>
             <span>{{ item.name }}</span>

@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { isLoggedOut } from './guards/is-logged-out.guard';
 import { isLoggedIn } from './guards/is-logged-in.guard';
 import { RoutesEnum } from '@chronoco/models/routes.enum';
+import { hasSelectedEvent } from '@chronoco/guards/has-selected-event.guard';
 
 export const routes: Route[] = [
   {
@@ -23,6 +24,7 @@ export const routes: Route[] = [
           {
             path: RoutesEnum.PLANNER,
             loadChildren: () => import('@chronoco/core/planner/planner.routes'),
+            canActivate: [ hasSelectedEvent ],
           },
           {
             path: RoutesEnum.USERS,
