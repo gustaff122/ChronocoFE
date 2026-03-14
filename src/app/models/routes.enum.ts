@@ -9,4 +9,5 @@ export enum RoutesEnum {
   EVENTS_EDIT_ID = ':id',
   USERS = 'users',
   USERS_ADD = 'add',
+  SELECT = 'select',
 }
